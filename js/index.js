@@ -1,6 +1,18 @@
 // Your code goes here
 let images = [...document.getElementsByTagName("img")];
 let body = document.querySelector("body");
+let colors = [
+  "#EC6447",
+  "#F69D25",
+  "#F6EF25",
+  "#BAF625",
+  "#25F6BC",
+  "#25D2F6",
+  "#2925F6",
+  "#AE25F6",
+  "#F086E4",
+  "#9F355C"
+];
 
 // Event adds a scale animation and border to all the img tags
 images.forEach(image => {
@@ -16,10 +28,10 @@ images.forEach(image => {
   });
 });
 
-let heading = document.querySelector("h2").textContent.split("");
+//Changes the background color of the nav Pressing keys 1-0
 window.addEventListener("keydown", function(e) {
-  let rx = new RegExp(e, "gi");
-  console.log(heading);
+  console.log(e.key)
+  nav.style['background-color'] = `${colors[e.key]}`
 });
 
 // Select the Fun Bus Logo Element
@@ -29,38 +41,30 @@ let logo = document.querySelector(".logo-heading");
 //To the random colors listed in the Array
 logo.style["user-select"] = "none";
 logo.addEventListener("dblclick", function(e) {
-  logo.style.color = `${randomColor()}`;
+  logo.style.color = `${randomColor(colors)}`;
   e.stopPropagation();
 });
 
 // Function to select a random color from the colors array
-function randomColor() {
-  let colors = [
-    "#EC6447",
-    "#F69D25",
-    "#F6EF25",
-    "#BAF625",
-    "#25F6BC",
-    "#25D2F6",
-    "#2925F6",
-    "#AE25F6",
-    "#F086E4",
-    "#9F355C"
-  ];
-  let rn = Math.floor(Math.random() * colors.length);
-  return colors[rn];
+function randomColor(el) {
+  let rn = Math.floor(Math.random() * el.length);
+  return el[rn];
 }
 
 // Load event which alerts the h2 heading selected by the querySelector
+let heading = document.querySelector("h2").textContent;
 window.addEventListener("load", function(event) {
-  alert(`${heading}`);
+  alert(`${heading}\n 
+    Press Keys 1-0 to change the Color of the Nav. \n
+    Double click the Fun Bus Logo to change the color. \n
+    Hover over the images to see an effect. \n
+    Click the buttons to see them move. \n
+    Double click the page to see colors. \n
+    Keep scrolling to change the color of the Background. \n
+    Highlight a Paragrah text and see the value in the console. \n
+  `);
 });
 
-// window.addEventListener("scroll", function(e) {
-//   window.scrollY;
-//   body.style["background-color"] = `rgb( 140,
-//     ${Math.floor(window.scrollY)}, 130`;
-// });
 
 //Double click event to add animations to all h2 and h4 headers
 body.addEventListener("dblclick", () => {
@@ -95,7 +99,7 @@ function myFunction() {
 let buttons = [...document.querySelectorAll(".btn")];
 buttons.forEach(button =>
   button.addEventListener("click", () => {
-    button.classList.add("heartbeat");
+    button.classList.toggle("heartbeat");
   })
 );
 
@@ -103,3 +107,47 @@ buttons.forEach(button =>
 [...document.querySelectorAll(".nav-link")].forEach(nav_item =>
   nav_item.addEventListener("click", e => e.preventDefault())
 );
+
+// Select the Text content of What you highlight
+let allP = [...document.getElementsByTagName('p')];
+
+allP.forEach(p => {
+    p.addEventListener('mouseup', function(e){
+        alert(e.target.textContent)
+    })
+})
+
+// Keep Scrolling to change the Background color 
+function scrollCounter(){
+  let counter = 0;
+  window.addEventListener('wheel', function(e){
+    (e.deltaY === 100)? counter++ : counter--
+    body.style["background-color"] = `rgb( 240,
+      ${counter}, ${counter-50}`;
+
+      displayCounter(counter);
+  })
+
+}
+
+let newScrollCounter = scrollCounter()
+
+
+// Adds a scroll counter to the nav bar and the color of the BG changes
+// The G and B values of the background are connected to the scroll counter
+// Which decreases / increases on the direction of the scroll
+let nav2 = document.querySelector('.nav')
+let counterDisplay = document.createElement('p');
+cdStyle = counterDisplay.style
+cdStyle.width = '30px';
+cdStyle.height = '30px';
+cdStyle['background-color'] = 'white';
+cdStyle['position'] = 'fixed';
+cdStyle['right'] = '500px';
+cdStyle['top'] = '10px';
+
+nav2.prepend(counterDisplay)
+
+function displayCounter(cn){
+counterDisplay.innerHTML = `<h2>${cn}<h2/>`
+}
